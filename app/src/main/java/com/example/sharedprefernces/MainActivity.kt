@@ -1,8 +1,11 @@
 package com.example.sharedprefernces
 
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
 import com.example.sharedprefernces.databinding.ActivityMainBinding
 
@@ -14,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var btnLoad: Button
     lateinit var edtUsername :TextView
     lateinit var edtEmail : TextView
+    lateinit var checkBox: CheckBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,17 +31,29 @@ class MainActivity : AppCompatActivity() {
         edtEmail = findViewById(R.id.edtEmail)
         btnSave = findViewById(R.id.btnSave)
         btnLoad = findViewById(R.id.btnLoad)
+        checkBox = findViewById(R.id.checkBox)
 
         binding.apply {
             btnSave.setOnClickListener {
                 val userName = edtUsername.text.toString()
                 val email = edtEmail.text.toString()
 
-                editor.apply {
-                    putString("user_name",userName)
-                    putString("email",email)
-                    apply()
+                if (checkBox.isChecked) {
+
+                    editor.apply {
+                        putString("user_name",userName)
+                        putString("email",email)
+                        apply()
+                    }
+                } else {
+                    val editor: SharedPreferences.Editor = sharedPref.edit()
+                   // sharedPref = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+                    editor.clear()
+                    editor.commit()
                 }
+
+
+
             }
 
             btnLoad.setOnClickListener {
